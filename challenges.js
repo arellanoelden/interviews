@@ -237,3 +237,150 @@ const amazonCustomer1 = new AmazonCustomer([
 ]);
 
 console.log(amazonCustomer1.getRecomendations());
+
+function debounce(callback, wait = 0) {
+  let timeout;
+  return () => {
+    const later = () => {
+      callback();
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+function a() {
+  console.log("a fired");
+}
+
+let b = debounce(a, 1000);
+b();
+b();
+b(); // will only print once
+
+class LinkNode {
+  constructor(val) {
+    this.val = val;
+    this.next;
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head;
+  }
+
+  add(node) {
+    if (!this.head) {
+      this.head = node;
+    } else {
+      let pointer = this.head;
+      while (pointer.next) {
+        pointer = pointer.next;
+      }
+      pointer.next = node;
+    }
+  }
+
+  has(val) {
+    let pointer = this.head;
+    while (pointer) {
+      if (pointer.val === val) {
+        return true;
+      }
+      pointer = pointer.next;
+    }
+    return false;
+  }
+}
+
+const linkedList = new LinkedList();
+
+linkedList.add(new Node(4));
+linkedList.add(new Node(5));
+linkedList.add(new Node(1));
+linkedList.add(new Node(2));
+
+console.log(linkedList.has(1)); // true
+console.log(linkedList.has(4)); // true
+console.log(linkedList.has(6)); // false
+
+// for (let i = 0; i < 4; i++) {
+//   setTimeout((i) => console.log(i), 0, i);
+// }
+
+function Dog(name) {
+  this.name = name;
+}
+
+Dog.prototype.speak = function () {
+  console.log(this.name);
+};
+
+const stark = new Dog("Stark");
+stark.speak();
+
+function removeChar(str, i) {
+  str = str.slice(0, i) + str.slice(i + 1);
+  return str;
+}
+
+function removeChar(str, val) {
+  let arr = str.split("");
+  return arr.filter((char) => char !== val).join("");
+}
+console.log("Sliced: ", "Hello".slice(2) === "llo");
+console.log("Sliced: ", "Hello".slice(2, 5));
+
+console.log(removeChar("Hello", 4));
+console.log(removeChar("Hello", "l"));
+
+function removeElementIndex(arr, i) {
+  // return arr.filter((elem, index) => index !== i);
+  const arr2 = [2, 3];
+  arr.splice(i, 1, ...arr2);
+  return arr;
+}
+
+function removeElementValue(arr, val) {
+  return arr.filter((elem) => elem !== val);
+}
+
+console.log(
+  "removeElementIndex 1 from [1,2,3,4,5] :",
+  removeElementIndex([1, 2, 3, 4, 5], 1)
+);
+
+console.log(
+  "removeElementValue 2 from [1,2,3,4,5] :",
+  removeElementValue([1, 2, 3, 4, 5], 2)
+);
+
+function Animal(breed) {
+  this.breed = breed;
+  this.speak2 = () => {
+    console.log(this.breed);
+  };
+}
+
+Animal.prototype.speak = function () {
+  console.log(this.breed);
+};
+
+const cat = new Animal("cat");
+cat.speak();
+cat.speak2();
+
+function Animal2() {
+  return {
+    breed: "cat",
+    speak: function () {
+      console.log("Breed: ", this.breed);
+    },
+  };
+}
+
+const pet = Animal2();
+console.log("breed: ", pet.breed);
+pet.speak();
