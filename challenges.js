@@ -384,3 +384,80 @@ function Animal2() {
 const pet = Animal2();
 console.log("breed: ", pet.breed);
 pet.speak();
+
+// Implement Function.prototype.bind()
+
+const foo = function () {
+  console.log(this.bar);
+};
+
+let baz = foo.bind({ bar: "hello bind" });
+
+baz(); // Hello;
+
+Function.prototype.bind = function (context) {
+  const fn = this;
+
+  return () => {
+    fn.call(context);
+  };
+};
+
+function removeDuplicates(str) {
+  const arr = str.split(" ");
+
+  const set = new Set(arr);
+
+  // can also use Array.from
+  const newString = [...set].join(" ");
+
+  // const newArr = [];
+  // const wordMap = {};
+
+  // for (let word of arr) {
+  //   if (!wordMap[word]) {
+  //     wordMap[word] = true;
+  //     newArr.push(word);
+  //   }
+  // }
+  // const newString = newArr.join(" ");
+  return newString;
+}
+
+console.log(
+  "removeDuplicated: ",
+  removeDuplicates("This is is a test a test string")
+);
+
+function flatten(arr) {
+  let newArr = [];
+  for (let item of arr) {
+    if (Array.isArray(item)) {
+      newArr = newArr.concat(flatten(item));
+    } else {
+      newArr.push(item);
+    }
+  }
+
+  return newArr;
+}
+
+const exampleArray = [1, 2, [3, 4, [5, 6, 7], 8], 9, 10];
+console.log("flatten: ", flatten(exampleArray));
+
+function debounce2(fn, timeoutTime) {
+  let timeout;
+  return function () {
+    clearTimeout(timeout);
+    timeout = setTimeout(fn, timeoutTime);
+  };
+}
+
+function debounceTest() {
+  console.log("HELLLLLO");
+}
+
+const debounceConst = debounce2(debounceTest, 1000);
+debounceConst();
+debounceConst();
+debounceConst();
