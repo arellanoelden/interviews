@@ -461,3 +461,76 @@ const debounceConst = debounce2(debounceTest, 1000);
 debounceConst();
 debounceConst();
 debounceConst();
+
+function reversePath(element, root) {
+  const path = [];
+
+  let pointer = element;
+  while (pointer.parent) {
+    path.push(pointer.parent.children.indexOf(pointer));
+    pointer = pointer.parent;
+  }
+
+  pointer = root;
+  while (path.length) {
+    pointer = pointer.children[path.pop()];
+  }
+  return pointer;
+}
+
+// request animation frame passes timestamp
+function moveElement(duration, distance, element) {
+  const start = performance.now();
+
+  function move(currentTime) {
+    const elapsed = currentTime - start;
+    const progress = elapsed / duration;
+    const amountToMove = progress * distance;
+
+    element.style.transform = `translateX(${Math.min(amountToMove)})px`;
+    if (amountToMove < distance) {
+      requestAnimationFrame(move);
+    }
+  }
+
+  requestAnimationFrame(move);
+}
+
+// Create a sleep function that takes one parameter (time) and
+// will wait "time" ms
+
+function sleep(time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
+  });
+}
+
+async function run() {
+  await sleep(500);
+  console.log("hello");
+  await sleep(500);
+  console.log("world");
+}
+
+run();
+
+// Create a function to turn any function into a "promisfied" function.
+// Any function to be promisified will always have a callback as the last argument.
+// The callback will always have this signature:
+//   function(result){}
+
+const exampleFn = function (x, y, callback) {
+  console.log(x + y);
+  return callback;
+};
+const promisedFn = promisify(exampleFn);
+// promisedFn().then(...).then(...)
++function promisify(fn) {
+  return new Promise((resolve) => {
+    let callback = fn();
+    resolve();
+    return promisify(callback);
+  });
+};
