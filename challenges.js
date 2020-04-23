@@ -528,9 +528,11 @@ const exampleFn = function (x, y, callback) {
 const promisedFn = promisify(exampleFn);
 // promisedFn().then(...).then(...)
 +function promisify(fn) {
-  return new Promise((resolve) => {
-    let callback = fn();
-    resolve();
-    return promisify(callback);
-  });
+  return function (...args) {
+    return new Promise((resolve) => {
+      let callback = fn();
+      resolve();
+      return promisify(callback);
+    });
+  };
 };
